@@ -1,8 +1,12 @@
+Notes for TryHackMe's Intro to LAN Room: https://tryhackme.com/room/introtolan
+
 # Introducing LAN Topologies
+
+- LAN (Local Area Network)
 
 - Topology refers to the design or look of the network at hand.
   
-**Star Topology**
+**Star Topology ⭐**
   
 - Devices are individually connected via a central networking device (switch or hub). 
 
@@ -18,7 +22,7 @@
 
 - If the centralized hardware that connects devices fails, the devices can't receive/transmit data (but they're often robust).
 
-**Bus Topology**
+**Bus Topology🚌**
 
 - Relies on a single connection called the backbone cable.
 
@@ -30,7 +34,7 @@
 
 - If the cable breaks, the data can't be received/transmitted
 
-**Ring Topology**
+**Ring Topology🔄**
 
 - Devices are connected directly to each other to form a loop, so little cabling is required and less dependence on dedicated hardware.
 
@@ -46,7 +50,7 @@
   
 - They are less prone to bottlenecks; however, a broken device or cable issue can break the entire network.
 
-**What is a Switch?**
+**What is a Switch? 🔀**
 
 - Dedicated devices within a network that connect multiple devices using Ethernet cables.
 
@@ -58,7 +62,7 @@
   
 - More efficient than hubs and repeaters. They keep track of what device is connected to which port. Due to this, packets are sent to the intended target (which reduces network traffic).
 
-**What is a Router?**
+**What is a Router? 📡**
 
 - A router connects networks and passes data between them by using routing.
 
@@ -76,7 +80,7 @@
   
 - When one path fails, another is available (the network stays online).
 ---
-**A Primer on Subnetting**
+**A Primer on Subnetting 🔢**
 
 - Subnetting is splitting up a network into smaller, miniature networks within itself.
 
@@ -104,7 +108,9 @@
       
 - Default Gateway: Connects your local network to other networks, acts as an exit point for your network
   
-    -  Device 192.168.1.100 wants to reach 8.8.8.8 (Google DNS), so the device sends the data to the default gateway (maybe 192.168.1.254). It then forwards it to the internet. Can use any host address, but usually use the first or last (.1 or .254).
+    -  Device 192.168.1.100 wants to reach 8.8.8.8 (Google DNS), so the device sends the data to the default gateway (maybe 192.168.1.254). It then forwards it to the internet. Can use any host address, but usually use the first or
+    
+       last (.1 or .254).
       
 - In small networks (home), you will be on one subnet, and it's unlikely you need more than 254 devices connected simultaneously.
   
@@ -112,14 +118,57 @@
       
 - Subnetting provides efficiency, security, and full control.
 ---
-**ARP**
+**ARP 📣**
 
-- Recall: A MAC Address and an IP address are responsible for identifying themselves on a network.
+- ARP (Address Resolution Protocol) is responsible for allowing devices to figure out who's on the network. It connects the IP address (network location) to the MAC address (physical ID) so devices can talk to each other.
 
-- ARP (Address Resolution Protocol) links an IP address to a MAC address.
+- This is necessary to send data correctly, and allows a device to associate its MAC address with an IP address
+
+    - like the IP address being the street address, and the MAC address being the exact apartment number.
   
+- Devices maintain a list that records which MAC address belongs to which IP address
 
+- If a device doesn't know the MAC address of another device, it sends a network-wide message asking, "Whose IP address is this?"
 
+**How does ARP Work?**
 
+- ARP uses a two-step process to match IPs with MACs, one to ask, one to answer.
+
+- Arp Request: Device asks "Who has this IP address?" to the entire network
+
+- ARP Reply: The device that owns it responds, "That's me, here's my MAC address."
+  
+- Each device has a ledger to store information, called a cache.
+  
+- ARP cache keeps track of which MAC address is associated with which IP address. This is a shortcut list. Without it, it would have to ask the whole network for it again.
+
+---
+**DHCP 🖥️**
+
+- IP addresses can either be manually assigned or automatically assigned, usually using a DHCP (Dynamic Host Configuration Protocol).
+
+- Once a device joins a network (connected to Wi-Fi, ethernet cable, etc, and is ready to be known by other devices to send and receive data). This is before ARP, since it needs an IP Address. 
+
+- There's a four-step conversation the device has with the DHCP server (typically integrated into your router).
+
+- DHCP Discover 🔍
+  
+    - I'm new. Can anyone give me an IP address?
+      
+- DHCP Offer 🎁
+  
+    - Yes! You can use this IP address.
+      
+- DHCP Request 🙋
+  
+    - I'll use the IP address you offered
+      
+- DHCP Ack (Acknowledgement) ✅
+  
+    - Great, it's yours now for 24 hours!
+ 
+- Recap: DHCP is to get an IP address to become recognizable to the network (devices know where to forward traffic), and ARP is needed to actually deliver the data to the correct machine!
+
+    - Example: Your laptop connects to the home Wi-Fi and doesn't have an IP address yet. It goes through the four-step conversation to get one. The laptop discovers your printer's IP, but needs to send the data, so the MAC Address is needed. It uses ARP to find out, and now a file can be sent to the printer.
 
   
